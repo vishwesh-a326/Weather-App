@@ -1,3 +1,5 @@
+import { generateSafetyTips } from '../components/SafetyDashboard';
+
 export function generateReport(weather, forecast, hourlyData, dailyData) {
   const city      = weather.name;
   const country   = weather.sys.country;
@@ -12,6 +14,14 @@ export function generateReport(weather, forecast, hourlyData, dailyData) {
   const sunrise   = new Date(weather.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const sunset    = new Date(weather.sys.sunset  * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const genTime   = new Date().toLocaleString();
+
+  const safetyTips = generateSafetyTips(weather);
+  const safetyRows = safetyTips.map(tip => `
+    <div style="background:#111318;border:1px solid #1f2430;border-radius:8px;padding:16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:24px;">${tip.icon}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#e8eaf0;">${tip.text}</div>
+    </div>
+  `).join('');
 
   const dailyRows = dailyData.map(d => `
     <tr>
@@ -113,6 +123,11 @@ export function generateReport(weather, forecast, hourlyData, dailyData) {
       <div class="stat"><div class="stat-icon">☁</div><div class="stat-val">${clouds}%</div><div class="stat-lbl">Cloud Cover</div></div>
       <div class="stat"><div class="stat-icon">🌊</div><div class="stat-val">${weather.main.sea_level || pressure} hPa</div><div class="stat-lbl">Sea Level</div></div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Safety Advisory</div>
+    <div>${safetyRows}</div>
   </div>
 
   <div class="section">
