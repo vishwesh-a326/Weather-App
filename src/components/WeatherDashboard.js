@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import './WeatherDashboard.css';
 import { generateReport } from '../utils/reportGenerator';
+import SafetyDashboard from './SafetyDashboard';
 
 const WMO_ICONS = {
   '01d': '☀️', '01n': '🌙', '02d': '⛅', '02n': '🌥️',
@@ -113,6 +114,9 @@ export default function WeatherDashboard({ weather, forecast }) {
           </div>
         ))}
       </div>
+
+      {/* SAFETY ADVISORY */}
+      <SafetyDashboard weatherData={weather} />
 
       {/* CHARTS */}
       <div className="charts-section">
